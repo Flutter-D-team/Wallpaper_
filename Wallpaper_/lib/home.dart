@@ -1,7 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
+import 'package:scroll_page_view/pager/page_controller.dart';
+import 'package:scroll_page_view/pager/scroll_page_view.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
+import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
+import 'package:wallpaper/view/image_view.dart';
 import 'dart:convert';
 import 'Drawer/drover.dart';
 import 'data/data.dart';
@@ -129,145 +136,147 @@ class HomeState extends State<Home> {
           ),
         ),
       ),
-      body: ListView.separated(
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.all(8),
-            color: Colors.blue,
-            height: 200,
-            child: Center(
-              child: Text(
-                "${index + 1}",
-                style: TextStyle(
-                  fontSize: 28,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return index % 4 == 0
-              ? Container(
-                  margin: EdgeInsets.all(8),
-                  height: 200,
-                  color: Colors.green,
-                  child: Center(
-                      child: Text(
-                    "separated",
-                    style: TextStyle(fontSize: 28, color: Colors.white),
-                  )),
-                )
-              : Container();
-        },
-        itemCount: 20,
-      ),
-      // backgroundColor: Colors.white,
-      // body: SingleChildScrollView(
-      //   physics: BouncingScrollPhysics(),
-      //   child: Padding(
-      //     padding: EdgeInsets.only(top: 87),
-      //     child: Container(
-      //       child: Column(
-      //         children: [
-      //           Container(
-      //             height: 170,
+      // body: ListView.separated(
+      //   itemBuilder: (context, index) {
+      //     return Container(
+      //       margin: EdgeInsets.all(8),
+      //       color: Colors.blue,
+      //       height: 200,
+      //       child: Center(
+      //         child: Text(
+      //           "${index + 1}",
+      //           style: TextStyle(
+      //             fontSize: 28,
       //             color: Colors.white,
-      //             child: ScrollPageView(
-      //               checkedIndicatorColor: Colors.black45,
-      //               indicatorColor: Colors.white70,
-      //               physics: BouncingScrollPhysics(),
-      //               delay: Duration(seconds: 4),
-      //               controller: ScrollPageController(),
-      //               children:
-      //                   _images.map((image) => _imageView(image)).toList(),
-      //             ),
       //           ),
-      //           SizedBox(height: 4),
-      //           Container(
-      //               padding: EdgeInsets.symmetric(horizontal: 5),
-      //               child: StaggeredGridView.countBuilder(
-      //                 // : StaggeredTile.count(2, index.isEven ? 1 : 1),
-      //                 // reverse: true,
-      //                 physics: ClampingScrollPhysics(),
-      //                 shrinkWrap: true,
-      //                 padding: EdgeInsets.all(0.0),
-      //                 crossAxisCount: 3,
-      //                 // reverse: true,
-      //                 crossAxisSpacing: 3,
-      //                 mainAxisSpacing: 3,
-      //                 itemCount:
-      //                     isLoadingMore ? photos.length + 10 : photos.length,
-      //                 itemBuilder: (context, index) {
-      //                   if (index < photos.length) {
-      //                     if (index != -1) {
-      //                       if (index % 10 == 9) {
-      //                         return Container(
-      //                           height: 600,
-      //                           child: isLoaded
-      //                               ? AdWidget(
-      //                                   ad: nativeAd,
-      //                                 )
-      //                               : const Center(
-      //                                   child: Text("Ad is Loading...")
-      //                                   // CircularProgressIndicator()
-      //                                   ),
-      //                         );
-      //                       } else {
-      //                         return GestureDetector(
-      //                           onTap: () {
-      //                             Get.to(
-      //                                 ImageView(
-      //                                 imgPath:
-      //                                     photos[index].src?.portrait ?? ""),transition: Transition.zoom);
-      //                           },
-      //                           child: Container(
-      //                             decoration: BoxDecoration(
-      //                                 borderRadius: BorderRadius.circular(8),
-      //                                 image: DecorationImage(
-      //                                   image: NetworkImage(
-      //                                     photos[index].src?.portrait ?? "",
-      //                                   ),
-      //                                   fit: BoxFit.cover,
-      //                                 )),
-      //                           ),
-      //                         );
-      //                       }
-      //                     } else {
-      //                       return Container(
-      //                         decoration: BoxDecoration(
-      //                             borderRadius: BorderRadius.circular(8),
-      //                             image: DecorationImage(
-      //                               image: NetworkImage(
-      //                                 photos[index].src?.portrait ?? "",
-      //                               ),
-      //                               fit: BoxFit.cover,
-      //                             )),
-      //                       );
-      //                     }
-      //                   } else {
-      //                     return const Center(
-      //                       child: CircularProgressIndicator(),
-      //                     );
-      //                   }
-      //                 },
-      //                 staggeredTileBuilder: (int index) {
-      //                   if (index != 1) {
-      //                     if (index % 10 == 9) {
-      //                       return StaggeredTile.count(3, 2);
-      //                     } else {
-      //                       return StaggeredTile.count(1, 1.8);
-      //                     }
-      //                   } else {
-      //                     return StaggeredTile.count(1, 1.8);
-      //                   }
-      //                 },
-      //               ))
-      //         ],
+      //         ),
       //       ),
-      //     ),
-      //   ),
+      //     );
+      //   },
+      //   separatorBuilder: (context, index) {
+      //     return index % 4 == 0
+      //         ? Container(
+      //             margin: EdgeInsets.all(8),
+      //             height: 200,
+      //             color: Colors.green,
+      //             child: Center(
+      //                 child: Text(
+      //               "separated",
+      //               style: TextStyle(fontSize: 28, color: Colors.white),
+      //             )),
+      //           )
+      //         : Container();
+      //   },
+      //   itemCount: 20,
       // ),
+      // backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.only(top: 87),
+          child: Container(
+            child: Column(
+              children: [
+                Container(
+                  height: 170,
+                  color: Colors.white,
+                  child: ScrollPageView(
+                    checkedIndicatorColor: Colors.black45,
+                    indicatorColor: Colors.white70,
+                    physics: BouncingScrollPhysics(),
+                    delay: Duration(seconds: 4),
+                    controller: ScrollPageController(),
+                    children:
+                        _images.map((image) => _imageView(image)).toList(),
+                  ),
+                ),
+                SizedBox(height: 4),
+                Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: StaggeredGridView.countBuilder(
+                      // : StaggeredTile.count(2, index.isEven ? 1 : 1),
+                      // reverse: true,
+                      physics: ClampingScrollPhysics(),
+                      shrinkWrap: true,
+                      padding: EdgeInsets.all(0.0),
+                      crossAxisCount: 3,
+                      // reverse: true,
+                      crossAxisSpacing: 3,
+                      mainAxisSpacing: 3,
+                      itemCount:
+                          isLoadingMore ? photos.length + 10 : photos.length,
+                      itemBuilder: (context, index) {
+                        if (index < photos.length) {
+                          if (index != -1) {
+                            if (index % 10 == 9) {
+                              return Container(
+                                height: 600,
+                                child: isLoaded
+                                    ? AdWidget(
+                                        ad: nativeAd,
+                                      )
+                                    : const Center(
+                                        child: CircularProgressIndicator()
+                                        // CircularProgressIndicator()
+                                        ),
+                              );
+                            } else {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.to(
+                                      ImageView(
+                                          imgPath:
+                                              photos[index].src?.portrait ??
+                                                  ""),
+                                      transition: Transition.zoom);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                          photos[index].src?.portrait ?? "",
+                                        ),
+                                        fit: BoxFit.cover,
+                                      )),
+                                ),
+                              );
+                            }
+                          } else {
+                            return Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      photos[index].src?.portrait ?? "",
+                                    ),
+                                    fit: BoxFit.cover,
+                                  )),
+                            );
+                          }
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                      staggeredTileBuilder: (int index) {
+                        if (index != 1) {
+                          if (index % 10 == 9) {
+                            return StaggeredTile.count(3, 2);
+                          } else {
+                            return StaggeredTile.count(1, 1.8);
+                          }
+                        } else {
+                          return StaggeredTile.count(1, 1.8);
+                        }
+                      },
+                    ))
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
