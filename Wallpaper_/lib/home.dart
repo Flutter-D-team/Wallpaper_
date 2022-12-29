@@ -22,7 +22,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
   // List<CategorieModel>? categories;
-  int num = 5;
+  int num = 23;
   NativeAd nativeAd;
   bool isLoaded = false;
   bool isLoadingMore = false;
@@ -34,7 +34,7 @@ class HomeState extends State<Home> {
     'https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg?auto=compress&cs=tinysrgb&w=600',
   ];
   List photos = [];
-  int noOfImageToLoad = 70;
+  int noOfImageToLoad = 80;
   @override
   Future<AdWidget> didChangeDependencies() async {
     // TODO: implement didChangeDependencies
@@ -49,16 +49,16 @@ class HomeState extends State<Home> {
         print("Ad Loaded");
       }, onAdFailedToLoad: (ad, error) {
         print("Ad failed to load");
-        // ad.dispose();
+        ad.dispose();
       }),
       request: AdRequest(),
     );
     nativeAd.load();
-    await Future.delayed(const Duration(seconds: 4));
-    return AdWidget(
-      ad: nativeAd,
-      key: Key(nativeAd.hashCode.toString()),
-    );
+    // await Future.delayed(Duration(seconds: 4));
+    // return AdWidget(
+    //   ad: nativeAd,
+    //   key: UniqueKey(),
+    // );
   }
 
   Future<void> getTrendingWallpaper() async {
@@ -227,7 +227,7 @@ class HomeState extends State<Home> {
                                       ImageView(
                                           imgPath:
                                               photos[index].src?.portrait ??
-                                                  ""),
+                                                  ''),
                                       transition: Transition.zoom);
                                 },
                                 child: Container(
